@@ -1,0 +1,168 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Node {
+public:
+	int data;
+	Node* next;
+	Node() {
+		this->data=0;
+
+		this->next=NULL;
+	}
+	Node(int data) {
+		this->data=data;
+		this->next=NULL;
+	}
+	~Node() {
+		cout << "Deleted Node data is " << this->data<<endl;
+	}
+
+};
+
+
+
+
+void printLinkedList(Node* head) {
+	if(head==NULL) {
+		cout<<"LL is empty"<<endl;
+		return;
+	}
+	Node* temp=head;
+	while(temp!=NULL) {
+		cout<<" "<<temp->data<<"->";
+		temp=temp->next;
+	}
+
+}
+
+int LengthOfLinkedList(Node* &head) {
+	Node* temp=head;
+	int length=0;
+	while(temp!=NULL) {
+		length++;
+		temp=temp->next;
+	}
+	return length;
+
+}
+void insertAtHead(Node* &head, Node* &tail, int data) {
+	//1st case if ll is empty so create a new node
+	if(head==NULL) {
+		Node* newNode=new Node(data);
+		head=newNode;
+		tail=newNode;
+		return;
+	}
+	//2nd case insert node at head
+	Node * newNode=new Node(data);
+	newNode->next=head;
+	head=newNode;
+}
+void insertAtTail(Node* &head, Node* &tail, int data) {
+	//1st case if ll is empty so create a new node
+	if(head==NULL) {
+		Node* newNode=new Node(data);
+		head=newNode;
+		tail=newNode;
+		return;
+	}
+	//2nd case insert node at Tail
+	Node * newNode=new Node(data);
+	tail->next=newNode;
+	tail=newNode;
+}
+
+
+//insert at middle
+
+void insertAtMiddle(Node* &head, Node* &tail, int data, int position) {
+	//1st case if ll is empty so create a new node
+	if(head==NULL) {
+		Node* newNode=new Node(data);
+		head=newNode;
+		tail=newNode;
+		return;
+	}
+
+
+	//2nd case if position is one so, insertAtHead
+	if(position==1) {
+		insertAtHead(head,tail,data);
+		return;
+	}
+
+
+	// 3rd case
+	int length=LengthOfLinkedList(head);
+// 	cout<<"now length of ll is "<<length<<endl;
+	if(position>=length) {
+		insertAtTail(head,tail,data);
+		return;
+	}
+
+	// 4th case if user give some invalid position so give warn msg
+	if(position<=0) {
+		cout<<"please give valid position"<<endl;
+		return;
+	}
+
+
+	//5th case reach the correct position and insert the Node
+	// we need to pointer to track the position
+	Node*prev=NULL;
+	Node* current=head;
+	while(position!=1) {
+		prev=current;
+		current=current->next;
+		position--;
+	}
+
+	// now we are on the correct position so insert our node
+	Node * newNode=new Node(data);
+	prev->next=newNode;
+	newNode->next=current;
+}
+
+
+
+int main() {
+	// your code goes here
+	Node * head=NULL;
+	Node *tail =NULL;
+	printLinkedList(head);
+	insertAtHead(head,tail,20);
+	cout<<"tail at "<<tail->data<<endl;
+	cout<<"head at "<<head->data<<endl;
+
+
+	insertAtHead(head,tail,10);
+	insertAtHead(head,tail,5);
+	cout<<endl;
+	cout<<"now head at "<<head->data<<endl;
+	cout<<"Tail at "<<tail->data<<endl;
+
+	insertAtTail(head,tail,30);
+	insertAtTail(head,tail,40);
+	insertAtTail(head,tail,50);
+
+	cout<<"finally  head at "<<head->data<<endl;
+	cout<<" finally Tail at "<<tail->data<<endl;
+
+
+	printLinkedList(head);
+	cout<<endl<<"length of ll is "<<LengthOfLinkedList(head)<<endl;
+
+	cout<<endl;
+
+	insertAtMiddle(head,tail,300000,5);
+	printLinkedList(head);
+	cout<<endl;
+
+	cout<<"last  head at "<<head->data<<endl;
+	cout<<"last Tail at "<<tail->data<<endl;
+	cout<<"length of ll is "<<LengthOfLinkedList(head)<<endl;
+
+
+
+
+}
