@@ -1,168 +1,217 @@
 #include <bits/stdc++.h>
 using namespace std;
-class Node {
-public:
-	int data;
-	Node* next;
-	Node() {
-		this->data=0;
-
-		this->next=NULL;
-	}
-	Node(int data) {
-		this->data=data;
-		this->next=NULL;
-	}
-	~Node() {
-		cout << "Deleted Node data is " << this->data<<endl;
-	}
-
+class Node{
+  public:
+  int data;
+  Node* next;
+  Node(){
+      this->data=0;
+      this->next=NULL;
+  }
+  Node(int data ){
+      this->data=data;
+      this->next=NULL;
+      
+  }
+  ~Node(){
+      cout<<"Deleted Node data is  "<<this->data<<endl;
+  }
 };
 
-
-
-
-void printLinkedList(Node* head) {
-	if(head==NULL) {
-		cout<<"LL is empty"<<endl;
-		return;
-	}
-	Node* temp=head;
-	while(temp!=NULL) {
-		cout<<" "<<temp->data<<"->";
-		temp=temp->next;
-	}
-
+void printLL(Node*&head){
+    if(head==NULL){
+        cout<<"LL is Empty"<<endl;
+        return;
+    }
+    Node* temp=head;
+    while(temp!=NULL){
+        cout<<" "<<temp->data<<"->";
+        temp=temp->next;
+    }
+    cout<<endl;
+    
+}
+int LengthOfLL(Node*&head){
+    if(head==NULL){
+        cout<<"0"<<endl;
+    }
+    int length=0;
+    Node* temp=head;
+    while(temp!=NULL){
+        length++;
+        temp=temp->next;
+    }
+    cout<<endl;
+    return length;
+    
 }
 
-int LengthOfLinkedList(Node* &head) {
-	Node* temp=head;
-	int length=0;
-	while(temp!=NULL) {
-		length++;
-		temp=temp->next;
-	}
-	return length;
+void insertAtHead(Node* &head,Node*&tail,int data){
+    //1st case 
+    if(head==NULL){
+        Node* newNode=new Node(data);
+        head=newNode;
+        tail=newNode;
+        return;
+    }
+    // insert at head
 
-}
-void insertAtHead(Node* &head, Node* &tail, int data) {
-	//1st case if ll is empty so create a new node
-	if(head==NULL) {
-		Node* newNode=new Node(data);
-		head=newNode;
-		tail=newNode;
-		return;
-	}
-	//2nd case insert node at head
-	Node * newNode=new Node(data);
-	newNode->next=head;
-	head=newNode;
-}
-void insertAtTail(Node* &head, Node* &tail, int data) {
-	//1st case if ll is empty so create a new node
-	if(head==NULL) {
-		Node* newNode=new Node(data);
-		head=newNode;
-		tail=newNode;
-		return;
-	}
-	//2nd case insert node at Tail
-	Node * newNode=new Node(data);
-	tail->next=newNode;
-	tail=newNode;
+    Node* newNode=new Node(data);
+    newNode->next=head;
+    head=newNode;
+    
 }
 
+void insertAtTail(Node* &head,Node*&tail,int data){
+    //1st case 
+    if(head==NULL){
+        Node* newNode=new Node(data);
+        head=newNode;
+        tail=newNode;
+        return;
+    }
+    // insert at tail
+    Node* newNode=new Node(data);
+    tail->next=newNode;
+    tail=newNode;
+    
+}
 
-//insert at middle
-
-void insertAtMiddle(Node* &head, Node* &tail, int data, int position) {
-	//1st case if ll is empty so create a new node
-	if(head==NULL) {
-		Node* newNode=new Node(data);
-		head=newNode;
-		tail=newNode;
-		return;
-	}
-
-
-	//2nd case if position is one so, insertAtHead
-	if(position==1) {
-		insertAtHead(head,tail,data);
-		return;
-	}
-
-
-	// 3rd case
-	int length=LengthOfLinkedList(head);
-// 	cout<<"now length of ll is "<<length<<endl;
-	if(position>=length) {
-		insertAtTail(head,tail,data);
-		return;
-	}
-
-	// 4th case if user give some invalid position so give warn msg
-	if(position<=0) {
-		cout<<"please give valid position"<<endl;
-		return;
-	}
-
-
-	//5th case reach the correct position and insert the Node
-	// we need to pointer to track the position
-	Node*prev=NULL;
-	Node* current=head;
-	while(position!=1) {
-		prev=current;
-		current=current->next;
-		position--;
-	}
-
-	// now we are on the correct position so insert our node
-	Node * newNode=new Node(data);
-	prev->next=newNode;
-	newNode->next=current;
+void anyPosition(Node* &head,Node*&tail,int data,int position){
+    //if head is null so ll is Empty so create a new LL 
+    if(head==NULL){
+        Node* newNode=new Node(data);
+        head=newNode;
+        tail=newNode;
+        return;
+    }
+    
+    
+    //2nd case 
+    if(position==1){
+        insertAtHead(head,tail,data);
+        return;
+    }
+    
+    int length=LengthOfLL(head);
+    //3rd case 
+    if(position>length){
+        insertAtTail(head,tail,data);
+        return;
+    }
+    
+    // 4th case 
+    if(position<=0){
+        cout<<"please give valid position "<<endl;
+        return;
+    }
+    
+    
+    // // case 5 any position
+    Node* prev=NULL;
+    Node* current=head;
+    while(position!=1){
+        prev=current;
+        current=current->next;
+        position--;
+    }
+    Node*newNode=new Node(data);
+    prev->next=newNode;
+    newNode->next=current;
 }
 
 
 
+
+
+
+
+void deleteAnyNode(Node* &head, Node*&tail, int position){
+    //1st case 
+    if(head==NULL){
+        cout<<"LL IS EMPTY"<<endl;
+        return;
+    }
+    
+    
+    //case 2 if there is single node in LL 
+    if(head==tail){
+        Node* temp=head;
+        head=head->next;
+        temp->next=NULL;
+        tail=NULL;
+        head=NULL;
+        delete temp;
+    }
+    
+    //3rd case 
+    if(position<=0){
+        cout<<"pass valid position"<<endl;
+        return;
+    }
+    
+    if(position==1){
+        Node* temp=head;
+        head=head->next;
+        temp->next=NULL;
+        delete temp;
+    }
+    
+    
+
+
+    //4th case delete the last node i.e tail
+    int length=LengthOfLL(head);
+    cout<<"length is "<<length<<endl;
+    Node *prev=head;
+    if(position>=length){
+    while(prev->next!=tail){
+        prev=prev->next;
+    }
+    prev->next=NULL;
+    delete tail;
+    tail=prev;
+ }
+
+  // 5th case delete any node 
+  if(position<length||position>1){
+         
+  Node* temp=NULL;
+  Node* current=head;
+  while(position!=1){
+    temp=current;
+    current=current->next;
+    position--;
+    }
+    
+    temp->next=current->next;
+    current->next=NULL;
+  delete current;}
+}
 int main() {
 	// your code goes here
-	Node * head=NULL;
-	Node *tail =NULL;
-	printLinkedList(head);
-	insertAtHead(head,tail,20);
-	cout<<"tail at "<<tail->data<<endl;
-	cout<<"head at "<<head->data<<endl;
-
-
+	Node* head=NULL;
+	Node* tail=NULL;
 	insertAtHead(head,tail,10);
 	insertAtHead(head,tail,5);
-	cout<<endl;
-	cout<<"now head at "<<head->data<<endl;
-	cout<<"Tail at "<<tail->data<<endl;
-
+	insertAtHead(head,tail,4);
+	insertAtTail(head,tail,20);
 	insertAtTail(head,tail,30);
 	insertAtTail(head,tail,40);
-	insertAtTail(head,tail,50);
 
-	cout<<"finally  head at "<<head->data<<endl;
-	cout<<" finally Tail at "<<tail->data<<endl;
+	printLL(head);
+    anyPosition(head,tail,5000,6);
+    	printLL(head);
 
-
-	printLinkedList(head);
-	cout<<endl<<"length of ll is "<<LengthOfLinkedList(head)<<endl;
-
-	cout<<endl;
-
-	insertAtMiddle(head,tail,300000,5);
-	printLinkedList(head);
-	cout<<endl;
-
-	cout<<"last  head at "<<head->data<<endl;
-	cout<<"last Tail at "<<tail->data<<endl;
-	cout<<"length of ll is "<<LengthOfLinkedList(head)<<endl;
-
-
+    cout<<"Now the length of LL"<<LengthOfLL(head)<<endl;
+	printLL(head);
+	cout<<"head at"<<head->data<<endl;
+	cout<<"Tail at "<<tail->data<<endl;
+    deleteAnyNode(head,tail,3);
+    cout<<" Length of the LL is "<<LengthOfLL(head)<<endl;
+    cout<<"head at"<<head->data<<endl;
+	cout<<"Tail at "<<tail->data<<endl;
+	    	printLL(head);
 
 
 }
